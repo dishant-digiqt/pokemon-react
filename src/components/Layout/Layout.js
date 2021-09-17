@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
-  AppBar,
-  Toolbar,
   CssBaseline,
-  IconButton,
   Typography,
-  Button,
-  Drawer,
   Paper,
-  Divider,
   Container,
   Card,
   CardActionArea,
@@ -16,8 +10,6 @@ import {
   CardMedia,
   Grid,
 } from "@material-ui/core";
-import { Menu as MenuIcon } from "@material-ui/icons";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
@@ -54,18 +46,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Layout = () => {
   const classes = useStyles();
-  
-  const [open, setOpen] = useState(false);
+
   const [pokemon, setPokemon] = useState([]);
 
   const loadData = () => {
-    axios.get("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0").then((resp) => {
-      for (let i = 0; i < resp.data.results.length; i++) {
-        axios.get(resp.data.results[i].url).then((result) => {
-          setPokemon((prevArray) => [...prevArray, result.data]);
-        });
-      }
-    });
+    axios
+      .get("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0")
+      .then((resp) => {
+        for (let i = 0; i < resp.data.results.length; i++) {
+          axios.get(resp.data.results[i].url).then((result) => {
+            setPokemon((prevArray) => [...prevArray, result.data]);
+          });
+        }
+      });
   };
 
   useEffect(loadData, []);
@@ -73,7 +66,7 @@ const Layout = () => {
   return (
     <>
       <CssBaseline />
-      
+
       <Container
         maxWidth="lg"
         component={Paper}
@@ -100,7 +93,6 @@ const Layout = () => {
           ))}
         </Grid>
       </Container>
-     
     </>
   );
 };
