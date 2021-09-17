@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-
+import { useParams, useHistory, Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   paper: {
     width: 240,
@@ -44,14 +44,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Layout = () => {
+const Layout = (props) => {
   const classes = useStyles();
-
+  const state = useParams();
+  const history = useHistory();
   const [pokemon, setPokemon] = useState([]);
 
+  
+
   const loadData = () => {
+    setPokemon([])
+    console.log(state, Object.entries(props));
     axios
-      .get("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0")
+      .get(
+        `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${
+          (state.page - 1) * 10
+        }`
+      )
       .then((resp) => {
         for (let i = 0; i < resp.data.results.length; i++) {
           axios.get(resp.data.results[i].url).then((result) => {
@@ -61,7 +70,7 @@ const Layout = () => {
       });
   };
 
-  useEffect(loadData, []);
+  useEffect(loadData, [state]);
 
   return (
     <>
@@ -73,6 +82,9 @@ const Layout = () => {
         elevattion={4}
         className={classes.container}
       >
+        <div>
+          <Link to={`/${parseInt(state.page,10) + 1}`}>Next</Link>
+        </div>
         <Grid container spacing={2}>
           {pokemon.map((poke, index) => (
             <Grid key={index} item xs={6} sm={2}>

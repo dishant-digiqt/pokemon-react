@@ -1,17 +1,17 @@
 import React, { Suspense } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
-import Layout from "./components/pokemon";
+import { Switch, Route } from "react-router-dom";
+import Layout from "./components/Layout";
 
 const App = () => {
   return (
-    <Router>
-      <Suspense fallback={<p>loading...</p>}>
-        <Switch>
-          <Route exact path="/" name="Layout" render={() => <Layout />} />
-        </Switch>
-      </Suspense>
-    </Router>
+    <Suspense fallback={<p>loading...</p>}>
+      <Switch>
+        <Route path="/:page" name="Layout">
+          
+          <Layout />
+        </Route>
+      </Switch>
+    </Suspense>
   );
 };
 
